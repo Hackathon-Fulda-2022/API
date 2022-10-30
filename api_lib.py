@@ -6,9 +6,9 @@ import json
 
 class hackathon_api:
     # Link to the deployed API on heroku Server
-    __api_path = "https://hackathon2022fulda.herokuapp.com/"
+    #__api_path = "https://hackathon2022fulda.herokuapp.com/"
     # Link to to a local running API
-    #__api_path = "http://127.0.0.1:5000/"
+    __api_path = "http://127.0.0.1:5000/"
 
 
     def post_initialize_vitalsTypes(self):
@@ -20,7 +20,10 @@ class hackathon_api:
         response = requests.post(
             self.__api_path + 'post_initialize_vitalsTypes',
         )
-        return json.loads(response.content)['status']
+        if json.loads(response.content)['status'] == 200:
+            return ''
+        else:
+            return json.loads(response.content)['result']
 
     def post_initialize_rooms(self, rooms_dict):
         '''
@@ -35,7 +38,10 @@ class hackathon_api:
                 "rooms_dict": rooms_dict
             }
         )
-        return json.loads(response.content)['status']
+        if json.loads(response.content)['status'] == 200:
+            return ''
+        else:
+            return json.loads(response.content)['result']
 
     def post_new_patient(self, patient_dict):
         """
@@ -50,7 +56,10 @@ class hackathon_api:
                 "patient_dict": patient_dict
             }
         )
-        return json.loads(response.content)['status']
+        if json.loads(response.content)['status'] == 200:
+            return ''
+        else:
+            return json.loads(response.content)['result']
 
     def post_new_employee(self, employee_dict):
         """
@@ -66,7 +75,10 @@ class hackathon_api:
                "employee": employee_dict
             }
         )
-        return json.loads(response.content)['status']
+        if json.loads(response.content)['status'] == 200:
+            return ''
+        else:
+            return json.loads(response.content)['result']
 
     def post_new_prescriptions(self, prescriptions_dict):
         """
@@ -81,7 +93,10 @@ class hackathon_api:
                "rooms_dict": prescriptions_dict
             }
         )
-        return json.loads(response.content)['status']
+        if json.loads(response.content)['status'] == 200:
+            return ''
+        else:
+            return json.loads(response.content)['result']
 
     def post_new_patientRequest(self, patientRequest_dict):
         """
@@ -96,7 +111,10 @@ class hackathon_api:
                 "patientRequest_dict": patientRequest_dict
              }
         )
-        return json.loads(response.content)['status']
+        if json.loads(response.content)['status'] == 200:
+            return ''
+        else:
+            return json.loads(response.content)['result']
 
     def post_update_medication(self, medication_dict):
         """
@@ -111,7 +129,10 @@ class hackathon_api:
                "medication_dict": medication_dict
             }
         )
-        return json.loads(response.content)['status']
+        if json.loads(response.content)['status'] == 200:
+            return ''
+        else:
+            return json.loads(response.content)['result']
 
     def post_update_vitals(self, vitals_dict):
         """
@@ -126,7 +147,10 @@ class hackathon_api:
                "vitals_dict": vitals_dict
             }
         )
-        return json.loads(response.content)['status']
+        if json.loads(response.content)['status'] == 200:
+            return ''
+        else:
+            return json.loads(response.content)['result']
 
     def post_update_patientcondition(self, patientcondition_dict):
         """
@@ -141,7 +165,10 @@ class hackathon_api:
                 "patientcondition_dict": patientcondition_dict
             }
         )
-        return json.loads(response.content)['status']
+        if json.loads(response.content)['status'] == 200:
+            return ''
+        else:
+            return json.loads(response.content)['result']
 
     def post_update_roomConditions(self, roomConditions_dict):
         """
@@ -156,28 +183,22 @@ class hackathon_api:
                "roomConditions_dict": roomConditions_dict
             }
         )
-        return json.loads(response.content)['status']
+        if json.loads(response.content)['status'] == 200:
+            return ''
+        else:
+            return json.loads(response.content)['result']
 
 
 if __name__ == '__main__':
 
     # Example Usage
-    api = hackathon_api()
-    api.post_initialize_vitalsTypes()
-    #api.post_new_patient({
-    #'psName': 'Mohr',
-    #'pfName': 'Moritz',
-    #'birthdate': '31.09.1967',
-    #'bloodtype': 'A-',
-    #'sex': 'männlich',
-    #'roomID': '1',
-    #'allergies': 'Pollen',
-    #'startdate': '30.09.2022',
-    #'enddate': '',
-    #'insurancecard': 'Techniker Krankenkasse',
-    #'pflegegrad': '3',
-    #'doctor': 'Dr. Röhr',
-    #'contacts': '+49 178 9824590323\nPalmenweg 23a\n48463 Grähburg',
-    #'notes': '',
-    #})
-    print('Done')
+    #api = hackathon_api()
+    #api.post_initialize_vitalsTypes()
+    #api.post_new_patient(patient_dict)
+    #api.post_new_patientRequest(patientRequest_dict)
+    #api.post_update_vitals(vitals_dict)
+    #api.post_update_patientcondition(patientcondition_dict)
+    #api.post_new_prescriptions(prescriptions_dict)
+    #api.post_update_medication(medication_dict)
+    #api.post_initialize_rooms(room_dict)
+    #api.post_update_roomConditions(roomConditions_dict)

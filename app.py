@@ -1,34 +1,24 @@
-# --- Imports --------------------------------------------------------------------------------------------------------
-import ast
-
-from flask import Flask, jsonify, Response
-from flask_restful import Resource, Api, reqparse
-
-from flask_jwt_extended import create_access_token
+import nltk
 from flask_jwt_extended import create_refresh_token
+from flask_jwt_extended import create_access_token
+from flask_restful import Resource, Api, reqparse
+from passlib.hash import pbkdf2_sha256 as sha256
 from flask_jwt_extended import get_jwt_identity
 from flask_jwt_extended import jwt_required
 from flask_jwt_extended import JWTManager
-from flask_jwt_extended import get_jti
-from flask_jwt_extended import get_jwt
-
-import psycopg2
-from sqlalchemy import create_engine
 from flask_sqlalchemy import SQLAlchemy
-
-import datetime
-import time
-import ciso8601
-
+from flask_jwt_extended import get_jwt
+from sqlalchemy import create_engine
+from flask import Flask, Response
+from dotenv import load_dotenv
 import pandas as pd
+import psycopg2
+import datetime
 import random
 import string
+import ast
 import re
 import os
-
-from passlib.hash import pbkdf2_sha256 as sha256
-from dotenv import load_dotenv
-from waitress import serve
 
 
 # --- API Configurations----------------------------------------------------------------------------------------------
@@ -267,22 +257,33 @@ def name_to_id(tdict):
     db = pd.read_sql_table(person, engine)
     patient_Id = -1
     temp = tdict[f'{person}Name']
-    vorname = temp[:temp.find(' ')]
-    nachname = temp[temp.find(' ') + 1:]
-    try:
-        patient_Id = db.loc[db[f'pfName'] == vorname][f'{person}ID']
-        tdict[f'{person}ID'] = patient_Id[0]
-        tdict.pop(f'{person}Name')
-    except:
-        # Vertausche Vor- und Nachname und versuche es erneut
-        temp = f'{nachname} {vorname}'
-        tdict[f'{person}Name'] = temp
+    dict_vorname = temp[:temp.find(' ')]
+    dict_nachname = temp[temp.find(' ') + 1:]
+    best_distance = 100000
+    bes_index = -1
+    for idx, row in db.iterrows():
+        db_vorname = row['pfName']
+        db_nachname = row['psName']
+        d1 = nltk.edit_distance(db_vorname, dict_vorname)
+        d1 += nltk.edit_distance(db_nachname, dict_nachname)
+        d2 = nltk.edit_distance(db_vorname, dict_nachname)
+        d2 += nltk.edit_distance(db_nachname, dict_vorname)
+
+        if best_distance > d1:
+            best_distance = d1
+            best_index = row['patientID']
+
+        if best_distance > d2:
+            best_distance = d2
+            best_index = row['patientID']
+
+    if best_distance <= 2:
         try:
-            patient_Id = db.loc[db[person] == tdict[f'{person}Name']][f'{person}ID']
-            tdict[f'{person}ID'] = patient_Id
+            tdict[f'{person}ID'] = best_index
             tdict.pop(f'{person}Name')
         except:
             return False
+
 
     return tdict
 
@@ -393,7 +394,7 @@ class post_new_prescriptions(Resource):
         new_data = name_to_id(new_data)
         if isinstance(new_data, bool):
             if new_data == False:
-                return {"status": 400, "result": "Kein Patient mit diesem Namen vorhanden."}
+                return {"status": 400, "result": "Es tut mit leid, mir ist kein Patient mit diesem Namen bekannt."}
         update_db('prescriptions', 'prescId', new_data)
 
         return {"status": 200, "result": "Data has been added."}
@@ -408,7 +409,7 @@ class post_new_patientRequest(Resource):
         new_data = name_to_id(new_data)
         if isinstance(new_data, bool):
             if new_data == False:
-                return {"status": 400, "result": "Kein Patient mit diesem Namen vorhanden."}
+                return {"status": 400, "result": "Es tut mit leid, mir ist kein Patient mit diesem Namen bekannt."}
         update_db('patientRequest', 'pReqId', new_data)
 
         return {"status": 200, "result": "Data has been added."}
@@ -423,7 +424,7 @@ class post_update_medication(Resource):
         new_data = name_to_id(new_data)
         if isinstance(new_data, bool):
             if new_data == False:
-                return {"status": 400, "result": "Kein Patient mit diesem Namen vorhanden."}
+                return {"status": 400, "result": "Es tut mit leid, mir ist kein Patient mit diesem Namen bekannt."}
         update_db('medication', 'medId', new_data)
 
         return {"status": 200, "result": "Data has been added."}
@@ -438,7 +439,7 @@ class post_update_vitals(Resource):
         new_data = name_to_id(new_data)
         if isinstance(new_data, bool):
             if new_data == False:
-                return {"status": 400, "result": "Kein Patient mit diesem Namen vorhanden."}
+                return {"status": 400, "result": "Es tut mit leid, mir ist kein Patient mit diesem Namen bekannt."}
         update_db('vitals', 'vitID', new_data)
 
         return {"status": 200, "result": "Data has been added."}
@@ -453,7 +454,7 @@ class post_update_patientcondition(Resource):
         new_data = name_to_id(new_data)
         if isinstance(new_data, bool):
             if new_data == False:
-                return {"status": 400, "result": "Kein Patient mit diesem Namen vorhanden."}
+                return {"status": 400, "result": "Es tut mit leid, mir ist kein Patient mit diesem Namen bekannt."}
         update_db('patientcondition', 'pcId', new_data)
 
         return {"status": 200, "result": "Data has been added."}
