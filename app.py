@@ -283,7 +283,8 @@ def name_to_id(tdict):
             tdict.pop(f'{person}Name')
         except:
             return False
-
+    else:
+        return False
 
     return tdict
 
@@ -394,7 +395,7 @@ class post_new_prescriptions(Resource):
         new_data = name_to_id(new_data)
         if isinstance(new_data, bool):
             if new_data == False:
-                return {"status": 400, "result": "Es tut mit leid, mir ist kein Patient mit diesem Namen bekannt."}
+                return {"status": 400, "result": "Es tut mir leid, mir ist kein Patient mit diesem Namen bekannt."}
         update_db('prescriptions', 'prescId', new_data)
 
         return {"status": 200, "result": "Data has been added."}
@@ -409,7 +410,7 @@ class post_new_patientRequest(Resource):
         new_data = name_to_id(new_data)
         if isinstance(new_data, bool):
             if new_data == False:
-                return {"status": 400, "result": "Es tut mit leid, mir ist kein Patient mit diesem Namen bekannt."}
+                return {"status": 400, "result": "Es tut mir leid, mir ist kein Patient mit diesem Namen bekannt."}
         update_db('patientRequest', 'pReqId', new_data)
 
         return {"status": 200, "result": "Data has been added."}
@@ -424,7 +425,7 @@ class post_update_medication(Resource):
         new_data = name_to_id(new_data)
         if isinstance(new_data, bool):
             if new_data == False:
-                return {"status": 400, "result": "Es tut mit leid, mir ist kein Patient mit diesem Namen bekannt."}
+                return {"status": 400, "result": "Es tut mir leid, mir ist kein Patient mit diesem Namen bekannt."}
         update_db('medication', 'medId', new_data)
 
         return {"status": 200, "result": "Data has been added."}
@@ -439,7 +440,7 @@ class post_update_vitals(Resource):
         new_data = name_to_id(new_data)
         if isinstance(new_data, bool):
             if new_data == False:
-                return {"status": 400, "result": "Es tut mit leid, mir ist kein Patient mit diesem Namen bekannt."}
+                return {"status": 400, "result": "Es tut mir leid, mir ist kein Patient mit diesem Namen bekannt."}
         update_db('vitals', 'vitID', new_data)
 
         return {"status": 200, "result": "Data has been added."}
@@ -454,7 +455,7 @@ class post_update_patientcondition(Resource):
         new_data = name_to_id(new_data)
         if isinstance(new_data, bool):
             if new_data == False:
-                return {"status": 400, "result": "Es tut mit leid, mir ist kein Patient mit diesem Namen bekannt."}
+                return {"status": 400, "result": "Es tut mir leid, mir ist kein Patient mit diesem Namen bekannt."}
         update_db('patientcondition', 'pcId', new_data)
 
         return {"status": 200, "result": "Data has been added."}
@@ -494,4 +495,4 @@ api.add_resource(post_update_roomConditions, '/post_update_roomConditions')
 #--- Run/Serve app ----------------------------------------------------------------------------------------------------
 if __name__ =='__main__':
     print('Api started')
-    app.run(debug=True, host='0.0.0.0')
+    app.run(debug=False, host='0.0.0.0')

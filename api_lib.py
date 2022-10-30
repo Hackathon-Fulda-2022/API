@@ -6,9 +6,9 @@ import json
 
 class hackathon_api:
     # Link to the deployed API on heroku Server
-    __api_path = "https://hackathon2022fulda.herokuapp.com/"
+    #__api_path = "https://hackathon2022fulda.herokuapp.com/"
     # Link to to a local running API
-    #__api_path = "http://127.0.0.1:5000/"
+    __api_path = "http://127.0.0.1:5000/"
 
 
     def post_initialize_vitalsTypes(self):
@@ -147,7 +147,7 @@ class hackathon_api:
                "vitals_dict": vitals_dict
             }
         )
-        if json.loads(response.content)['status'] == 200:
+        if int(json.loads(response.content)['status']) == 200:
             return ''
         else:
             return json.loads(response.content)['result']
