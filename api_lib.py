@@ -1,6 +1,5 @@
 #!/usr/bin/python
 #-*- coding:utf-8 -*-
-from example_data import *
 import requests
 import json
 
@@ -167,7 +166,7 @@ if __name__ == '__main__':
     #api.post_initialize_vitalsTypes()
     #api.post_new_patient(patient_dict)
     #api.post_new_patientRequest(patientRequest_dict)
-    api.post_update_vitals(vitals_dict)
+    #api.post_update_vitals(vitals_dict)
     #api.post_update_patientcondition(patientcondition_dict)
     #api.post_new_prescriptions(prescriptions_dict)
     #api.post_update_medication(medication_dict)
