@@ -1,7 +1,5 @@
 #!/usr/bin/python
 #-*- coding:utf-8 -*-
-from init_database import *
-from example_data import *
 import requests
 import json
 
@@ -165,13 +163,21 @@ if __name__ == '__main__':
 
     # Example Usage
     api = hackathon_api()
-    #api.post_initialize_vitalsTypes()
-    #api.post_new_patient(patient_dict)
-    #api.post_new_patientRequest(patientRequest_dict)
-    api.post_update_vitals(vitals_dict)
-    #api.post_update_patientcondition(patientcondition_dict)
-    #api.post_new_prescriptions(prescriptions_dict)
-    #api.post_update_medication(medication_dict)
-    #api.post_initialize_rooms(room_dict)
-    #api.post_update_roomConditions(roomConditions_dict)
+    api.post_initialize_vitalsTypes()
+    #api.post_new_patient({
+    #'psName': 'Mohr',
+    #'pfName': 'Moritz',
+    #'birthdate': '31.09.1967',
+    #'bloodtype': 'A-',
+    #'sex': 'männlich',
+    #'roomID': '1',
+    #'allergies': 'Pollen',
+    #'startdate': '30.09.2022',
+    #'enddate': '',
+    #'insurancecard': 'Techniker Krankenkasse',
+    #'pflegegrad': '3',
+    #'doctor': 'Dr. Röhr',
+    #'contacts': '+49 178 9824590323\nPalmenweg 23a\n48463 Grähburg',
+    #'notes': '',
+    #})
     print('Done')
