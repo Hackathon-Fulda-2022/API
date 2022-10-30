@@ -1,0 +1,80 @@
+CREATE TABLE Users(
+    user_id int NOT NULL Primary Key,
+    last_name varchar(255),
+    first_name varchar(255),
+    email varchar(255),
+    password varchar(255),
+    email_confirmed boolean default False,
+    registration_date date
+);
+
+CREATE TABLE admins(
+    user_id int
+);
+
+CREATE TABLE blocklist(
+    jti varchar(255)
+);
+
+
+CREATE TABLE coin_table_1(
+	candle_id serial NOT NUll Primary Key,
+	open float,
+	high float,
+	low float,
+	close float
+);
+
+
+CREATE TABLE coin_table_2(
+	prediction_id serial NOT NUll Primary Key,
+	min_15 float,
+	min_30 float,
+	min_45 float,
+	min_60 float,
+
+	min_75 float,
+	min_90 float,
+	min_105 float,
+	min_120 float,
+	
+	min_135 float,
+	min150 float,
+	min_165 float,
+	min_180 float,
+	
+	min_195 float,
+	min_210 float,
+	min_225 float,
+	min_240 float,
+
+	min_255 float,
+	min_270 float,
+	min_285 float,
+	min_300 float,
+	
+	min_315 float,
+	min_330 float,
+	min_345 float,
+	min_360 float
+);
+
+CREATE TABLE coins(
+	coin varchar(255),
+	updated varchar(255),
+	course_change Float
+);
+
+create Table post_count(
+	id Serial Primary Key,
+	counter integer
+);
+
+CREATE TABLE alerts(
+	alert_id serial primary key,
+	title varchar(255),
+	body varchar(255),
+	type varchar(255),
+	active boolean,
+	date varchar(255)
+);
